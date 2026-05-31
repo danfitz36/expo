@@ -285,10 +285,10 @@ private struct EventObserver: ~Copyable {
   let removeListener: JavaScriptFunction
   let removeAllListeners: JavaScriptFunction
 
-  init(emitter: consuming JavaScriptObject) {
-    self.addListener = emitter.getPropertyAsFunction("addListener")
-    self.removeListener = emitter.getPropertyAsFunction("removeListener")
-    self.removeAllListeners = emitter.getPropertyAsFunction("removeAllListeners")
+  init(emitter: consuming JavaScriptObject) throws {
+    self.addListener = try emitter.getPropertyAsFunction("addListener")
+    self.removeListener = try emitter.getPropertyAsFunction("removeListener")
+    self.removeAllListeners = try emitter.getPropertyAsFunction("removeAllListeners")
     self.emitter = emitter
   }
 }
@@ -307,5 +307,5 @@ private func setupEventObserver(
 
   emitter.setProperty(functionName, value: observingFunction)
 
-  return EventObserver(emitter: emitter)
+  return try EventObserver(emitter: emitter)
 }
